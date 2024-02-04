@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMaster Color Game</title>
+    <style>
+        #form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .block {
+            width: 80px;
+            height: 80px;
+            margin: 5px;
+        }
+       .colonne {
+            display: flex;
+            justify-content: center;    
+        }
+    </style>
+    <script>
+        var ligneActuelle = 0;
+        var generatedColors = generateColors();
+        var index=0;
+        function verif() {
+            var res1 = document.getElementById('res1');
+            var res2 = document.getElementById('res2');
+            var res3 = document.getElementById('res3');
+            var res4 = document.getElementById('res4');
+            var res5 = document.getElementById('res5');
+            const res=[res1,res2,res3,res4,res5];
+            var colors = choosedColors();
+            var t = 0;
+            var e = 0;
+            const tab = ['c1', 'c2', 'c3'];
+            for (var j = 0; j < 3; j++) {
+                if (generatedColors[j] == colors[j])
+                    t++;
+                else {
+                    for (var k = 0; k < 3; k++) {
+                        if (k !== j && generatedColors[j] == colors[k])
+                            e++;
+                    }
+                }
+            }
+            if (t == 3) {
+                e=0;
+                res[index].innerHTML="T:"+t+" E:"+e;
+                window.alert('you won');
+            } else {
+                if (ligneActuelle == 5) {
+                    window.alert('you lost');
+                    for (var i = 0; i < 3; i++)
+                        document.getElementById(tab[i]).style.backgroundColor = generatedColors[i];
+                }
+            res[index].innerHTML="T:"+t+" E:"+e;
+            index++;
+            }
+        } 
+        function putColors() {
+            var x, i;
+            const couleurPremierLigne = ['col1', 'col2', 'col3'];
+            const couleurDeuxiemeLigne = ['col4', 'col5', 'col6'];
+            const coleurTroisiemeLigne = ['col7', 'col8', 'col9'];
+            const couleurQuatriemeLigne = ['col10', 'col11', 'col12'];
+            const coleurCinquiemeLigne = ['col13', 'col14', 'col15'];
+            switch (ligneActuelle) {
+                case 0:
+                    x = choosedColors();
+                    for (i = 0; i < 3; i++) {
+                        document.getElementById(couleurPremierLigne[i]).style.backgroundColor = x[i];
+                    }
+                    ligneActuelle++;
+                    verif();
+                    break;
+                case 1:
+                    x = choosedColors();
+                    for (i = 0; i < 3; i++) {
+                        document.getElementById(couleurDeuxiemeLigne[i]).style.backgroundColor = x[i];
+                    }
+                    ligneActuelle++;
+                    verif();
+                    break;
+                case 2:
+                    x = choosedColors();
+                    for (i = 0; i < 3; i++) {
+                        document.getElementById(coleurTroisiemeLigne[i]).style.backgroundColor = x[i];
+                    }
+                    ligneActuelle++;
+                    verif();
+                    break;
+                case 3:
+                    x = choosedColors();
+                    for (i = 0; i < 3; i++) {
+                        document.getElementById(couleurQuatriemeLigne[i]).style.backgroundColor = x[i];
+                    }
+                    ligneActuelle++;
+                    verif();
+                    break;
+                case 4:
+                    x = choosedColors();
+                    for (i = 0; i < 3; i++) {
+                        document.getElementById(coleurCinquiemeLigne[i]).style.backgroundColor = x[i];
+                    }
+                    ligneActuelle++;
+                    verif();
+                    break;
+                default:
+                    verif();
+            }
+        }
+        function choosedColors() {
+            var choixSequence = ['sequenceCouleur1', 'sequenceCouleur2', 'sequenceCouleur3'];
+            var choixCouleurs = [];
+            for (var i = 0; i < 3; i++) {
+                var selectElement = document.getElementById(choixSequence[i]);
+                var selectedOption = selectElement.options[selectElement.selectedIndex];
+                var selectedColorClass = selectedOption.className;
+                choixCouleurs.push(selectedColorClass);
+            }
+            return choixCouleurs;
+        }
+        function generateColors() {
+            const t = ['red', 'green', 'blue', 'pink', 'orange', 'yellow', 'purple', 'aqua', 'beige', 'grey'];
+            var v = [];
+            var i, c, j;
+            var test;
+            do {
+                i = 0;
+                test = true;
+                do {
+                    var nombreAleatoire = Math.floor(Math.random() * 10) + 1;
+                    switch (nombreAleatoire) {
+                        case 1:
+                            v[i] = 'red';
+                            break;
+                        case 2:
+                            v[i] = 'green';
+                            break;
+                        case 3:
+                            v[i] = 'blue';
+                            break;
+                        case 4:
+                            v[i] = 'pink';
+                            break;
+                        case 5:
+                            v[i] = 'orange';
+                            break;
+                        case 6:
+                            v[i] = 'yellow';
+                            break;
+                        case 7:
+                            v[i] = 'purple';
+                            break;
+                        case 8:
+                            v[i] = 'aqua';
+                            break;
+                        case 9:
+                            v[i] = 'beige';
+                            break;
+                        case 10:
+                            v[i] = 'grey';
+                            break;
+                    }
+                    i++;
+                } while (i !== 3);
+                c = 2;
+                do {
+                    for (j = c - 1; j >= 0; j--) {
+                        if (v[c] == v[j])
+                            test = false;
+                    }
+                    c--;
+                } while (c !== 0);
+            } while (test !== true);
+            for (i = 0; i < 3; i++)
+                console.log(v[i]);
+            return v;
+        }
+    </script>
+</head>
+<body>
+    <h1 align="center">MindMaster Color Game</h1>
+    <div id="form">
+        <form method="post">
+            <label for="sequenceCouleur1">C1</label>
+            <select name="sequenceCouleur1" id="sequenceCouleur1">
+                <option value="red" class="red">Red</option>
+                <option value="green" class="green">Green</option>
+                <option value="blue" class="blue">Blue</option>
+                <option value="pink" class="pink">Pink</option>
+                <option value="orange" class="orange">Orange</option>
+                <option value="yellow" class="yellow">Yellow</option>
+                <option value="purple" class="purple">Purple</option>
+                <option value="aqua" class="aqua">Aqua</option>
+                <option value="biege" class="beige">Beige</option>
+                <option value="grey" class="grey">Grey</option>
+            </select>
+            <label for="sequenceCouleur2">C2</label>
+            <select name="sequenceCouleur2" id="sequenceCouleur2">
+                <option value="red" class="red">Red</option>
+                <option value="green" class="green">Green</option>
+                <option value="blue" class="blue">Blue</option>
+                <option value="pink" class="pink">Pink</option>
+                <option value="orange" class="orange">Orange</option>
+                <option value="yellow" class="yellow">Yellow</option>
+                <option value="purple" class="purple">Purple</option>
+                <option value="aqua" class="aqua">Aqua</option>
+                <option value="biege" class="beige">Beige</option>
+                <option value="grey" class="grey">Grey</option>
+            </select>
+            <label for="sequenceCouleur3">C3</label>
+            <select name="sequenceCouleur3" id="sequenceCouleur3">
+                <option value="red" class="red">Red</option>
+                <option value="green" class="green">Green</option>
+                <option value="blue" class="blue">Blue</option>
+                <option value="pink" class="pink">Pink</option>
+                <option value="orange" class="orange">Orange</option>
+                <option value="yellow" class="yellow">Yellow</option>
+                <option value="purple" class="purple">Purple</option>
+                <option value="aqua" class="aqua">Aqua</option>
+                <option value="biege" class="beige">Beige</option>
+                <option value="grey" class="grey">Grey</option>
+            </select>
+        </form>
+        <br>
+        <button id="Verif" onclick="putColors()">Verif Me</button>
+    </div>
+    <br>
+    <h4>Attempt 1:</h4>
+    <div id="res1" class="block"></div>
+    <div class="colonne">
+        <div id="col1" class="block"></div>
+        <div id="col2" class="block"></div>
+        <div id="col3" class="block"></div>
+    </div>
+        <h4>Attempt 2:</h4>
+        <div id="res2" class="block"></div>
+        <div class="colonne">
+            <div id="col4" class="block"></div>
+            <div id="col5" class="block"></div>
+            <div id="col6" class="block"></div>
+        </div>
+        <h4>Attempt 3:</h4>
+        <div id="res3" class="block"></div>
+        <div class="colonne">
+            <div id="col7" class="block"></div>
+            <div id="col8" class="block"></div>
+            <div id="col9" class="block"></div>
+        </div>
+        <h4>Attempt 4:</h4>
+        <div id="res4" class="block"></div>
+        <div class="colonne">
+            <div id="col10" class="block"></div>
+            <div id="col11" class="block"></div>
+            <div id="col12" class="block"></div>
+        </div>
+        <h4>Attempt 5:</h4>
+        <div id="res5" class="block"></div>
+        <div class="colonne">
+            <div id="col13" class="block"></div>
+            <div id="col14" class="block"></div>
+            <div id="col15" class="block"></div>
+        </div>
+    <p align="center">Correct Color</p>
+    <div class="colonne">
+        <div id="c1" class="block"></div>
+        <div id="c2" class="block"></div>
+        <div id="c3" class="block"></div>
+    </div>
+</body>
+</html>
